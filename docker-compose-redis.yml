@@ -1,0 +1,7 @@
+services:
+  redis:
+    container_name: redis
+    image: redis:alpine
+    restart: unless-stopped
+    command: ["redis-server", "--requirepass", "redis1234"]
+    network_mode: container:web_app #pagmagkasama

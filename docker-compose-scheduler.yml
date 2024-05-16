@@ -1,0 +1,24 @@
+version: '3'
+
+networks:
+  laravel:
+
+services:
+  scheduler:
+    container_name: web_scheduler
+    build:
+      context: ./dockerfiles
+      dockerfile: php.root.dockerfile
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+    restart: unless-stopped
+    volumes:
+      - ./src:/var/www/html:delegated
+    entrypoint: ["/bin/sh","-c"]
+    command:
+    - |
+      php /var/www/html/artisan queue:work &
+      php /var/www/html/artisan schedule:work
+    networks:
+      - laravel

@@ -1,0 +1,34 @@
+networks:
+  laravel:
+          
+services:
+  mysql:
+    container_name: mysql
+    image: mariadb:10.6
+    restart: unless-stopped
+    tty: true
+    environment:
+      MYSQL_DATABASE: mendyfied
+      MYSQL_USER: mendyfied
+      MYSQL_PASSWORD: mendyfied1234
+      MYSQL_ROOT_PASSWORD: mendyfied1234
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+      TZ: Asia/Manila
+    volumes:
+      - ./mysql:/var/lib/mysql
+    network_mode: container:web_app #pagmagkasama
+
+  # phpmyadmin:
+  #   container_name: phpmyadmin
+  #   image: phpmyadmin/phpmyadmin
+  #   restart: unless-stopped
+  #   ports:
+  #     - "8081:80"
+  #   environment:
+  #     - PMA_HOST=127.0.0.1
+  #     - PMA_PORT=3306
+  #     - TZ=Asia/Manila
+  #   depends_on:
+  #     - mysql
+  #   network_mode: container:web_app

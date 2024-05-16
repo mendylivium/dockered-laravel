@@ -1,0 +1,41 @@
+version: '3'
+
+networks:
+  laravel:
+
+services:
+  app:
+    container_name: web_app
+    build:
+      context: ./dockerfiles
+      dockerfile: nginx.dockerfile
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./src:/var/www/html:delegated
+    depends_on:
+      - php
+    networks:
+      - laravel
+    environment:
+      - TZ=Asia/Manila
+
+  php:
+    container_name: php
+    build:
+      context: ./dockerfiles
+      dockerfile: php.root.dockerfile
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+    restart: unless-stopped
+    volumes:
+      - ./src:/var/www/html:delegated
+    networks:
+      - laravel
+    environment:
+      - TZ=Asia/Manila

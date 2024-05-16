@@ -1,0 +1,1 @@
+Run `docker-compose -f docker-compose-web.yml run --rm composer create-project laravel/laravel`

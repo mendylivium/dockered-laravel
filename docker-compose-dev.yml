@@ -1,0 +1,33 @@
+networks:
+  laravel:
+          
+services:
+  composer:
+    container_name: composer
+    build:
+      context: ./dockerfiles
+      dockerfile: php.root.dockerfile
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+    restart: unless-stopped
+    volumes:
+       - ./src:/var/www/html
+    entrypoint: [ 'composer', '--ignore-platform-reqs' ]
+    networks:
+      - laravel
+
+  artisan:
+    container_name: artisan
+    build:
+      context: ./dockerfiles
+      dockerfile: php.root.dockerfile
+      args:
+        - UID=${UID:-1000}
+        - GID=${GID:-1000}
+    restart: unless-stopped
+    volumes:
+      - ./src:/var/www/html:delegated
+    entrypoint: [ "php", "/var/www/html/artisan" ]
+    networks:
+      - laravel
